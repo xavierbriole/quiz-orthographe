@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Connexion TikTok – Quiz Orthographe</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0B1026;color:#E2E8F0;line-height:1.6}
+main{max-width:720px;margin:0 auto;padding:48px 24px}
+h1{color:#fff;font-size:1.6rem;margin:0 0 16px}
+.ok{color:#22C55E}.err{color:#EF4444}
+textarea{width:100%;box-sizing:border-box;height:120px;background:#24184F;color:#fff;border:2px solid #FACC15;border-radius:12px;padding:12px;font:14px ui-monospace,monospace;resize:none}
+button{margin-top:12px;background:#FACC15;color:#0B1026;border:0;border-radius:10px;padding:12px 20px;font-weight:700;font-size:1rem;cursor:pointer}
+.muted{color:#94A3B8;font-size:.9rem}
+</style>
+</head>
+<body>
+<main>
+  <h1 id="titre">Connexion TikTok</h1>
+  <p id="message"></p>
+  <textarea id="adresse" readonly></textarea>
+  <button id="copier">Copier l'adresse</button>
+  <p class="muted">Ce code n'est valable que quelques minutes et ne fonctionne qu'avec le secret de l'app : il ne quitte pas ton navigateur.</p>
+</main>
+<script>
+  var p = new URLSearchParams(location.search);
+  var titre = document.getElementById("titre");
+  var msg = document.getElementById("message");
+  var zone = document.getElementById("adresse");
+  zone.value = location.href;
+  if (p.get("code")) {
+    titre.innerHTML = '<span class="ok">✔</span> Autorisation reçue';
+    msg.textContent = "Copie l'adresse ci-dessous et colle-la dans le terminal, là où le script te la demande.";
+  } else if (p.get("error")) {
+    titre.innerHTML = '<span class="err">✖</span> Autorisation refusée';
+    msg.textContent = (p.get("error_description") || p.get("error")) + " – relance « node scripts/tiktok.mjs connexion ».";
+  } else {
+    msg.textContent = "Page de retour de la connexion TikTok de Quiz Orthographe.";
+  }
+  document.getElementById("copier").addEventListener("click", function () {
+    zone.select();
+    (navigator.clipboard ? navigator.clipboard.writeText(zone.value) : Promise.reject())
+      .then(function () { this.textContent = "Copié ✔"; }.bind(this))
+      .catch(function () { document.execCommand("copy"); });
+  });
+</script>
+</body>
+</html>

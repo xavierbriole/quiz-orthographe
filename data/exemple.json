@@ -1,0 +1,85 @@
+{
+  "titre": "Quiz orthographe",
+  "questions": [
+    {
+      "options": [
+        "sphèrre",
+        "sphère",
+        "sfère"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "options": [
+        "ressenblant",
+        "resemblant",
+        "ressemblant"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "options": [
+        "alocation",
+        "allocasion",
+        "allocation"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "options": [
+        "griffe",
+        "grife",
+        "gryffe"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "options": [
+        "étofe",
+        "étoffe",
+        "éttoffe"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "options": [
+        "télécomande",
+        "télècommande",
+        "télécommande"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "options": [
+        "arcèlement",
+        "harcèlement",
+        "harcèllement"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "options": [
+        "pirrouette",
+        "pirouete",
+        "pirouette"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "options": [
+        "osseu",
+        "oseux",
+        "osseux"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "options": [
+        "hypocrisie",
+        "hipocrisie",
+        "ypocrisie"
+      ],
+      "correctIndex": 0
+    }
+  ]
+}
