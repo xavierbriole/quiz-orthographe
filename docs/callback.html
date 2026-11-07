@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Connexion TikTok – Quiz Orthographe</title>
+<title>Connexion TikTok – Quiz Langues</title>
 <style>
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0B1026;color:#E2E8F0;line-height:1.6}
 main{max-width:720px;margin:0 auto;padding:48px 24px}
@@ -36,7 +36,7 @@ button{margin-top:12px;background:#FACC15;color:#0B1026;border:0;border-radius:1
     titre.innerHTML = '<span class="err">✖</span> Autorisation refusée';
     msg.textContent = (p.get("error_description") || p.get("error")) + " – relance « node scripts/tiktok.mjs connexion ».";
   } else {
-    msg.textContent = "Page de retour de la connexion TikTok de Quiz Orthographe.";
+    msg.textContent = "Page de retour de la connexion TikTok de Quiz Langues.";
   }
   document.getElementById("copier").addEventListener("click", function () {
     zone.select();
