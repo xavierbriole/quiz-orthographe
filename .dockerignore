@@ -2,5 +2,7 @@ node_modules
 out
 data/cache
 data/historique.json
+data/historique-*.json
 data/tiktok-token.json
+data/tiktok-token-*.json
 config/tiktok.json

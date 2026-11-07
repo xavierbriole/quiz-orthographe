@@ -1,7 +1,15 @@
-# Quiz orthographe – générateur automatique de vidéos TikTok
+# Quiz langues – générateur automatique de vidéos quiz (TikTok, Xiaohongshu)
 
 Vidéos verticales 1080×1920 de 10 mots (~100 s) : intro → 10 questions (3 choix,
 7 s de réflexion, réponse) → appel à commenter. **Aucun mot à saisir.**
+
+Trois quiz, même format, même pipeline :
+
+| Quiz | Pour qui | Question | Publication |
+|---|---|---|---|
+| `orthographe` | francophones | « Quelle est la bonne orthographe ? » | brouillon TikTok (automatique) |
+| `chinois` | **anglophones** qui apprennent le chinois (public bien plus large) | 汉字 + pinyin → sens en anglais, **interface en anglais**, thème laque rouge et or | brouillon TikTok sur un **compte dédié** (automatique) |
+| `francais` | sinophones qui apprennent le français | mot français + nature (n.f., v.…) → sens en chinois, **interface en chinois simplifié** | Xiaohongshu (à la main, via Discord) |
 
 ## Utilisation
 
@@ -10,8 +18,13 @@ npm install
 npm run render                          # 1 vidéo avec 10 mots inédits → out/quiz-001.mp4 + légende .txt
 node scripts/render.mjs --videos=7      # une semaine d'un coup
 node scripts/render.mjs --mots=8        # vidéo plus courte
-npm run studio                          # prévisualiser
+node scripts/render.mjs --quiz=chinois  # quiz de chinois → out/chinois-001.mp4
+node scripts/render.mjs --quiz=francais # quiz de français → out/francais-001.mp4 + -couverture.png + .txt (titre + texte)
+node scripts/render.mjs --quiz=orthographe,chinois,francais   # les trois d'un coup
+npm run studio                          # prévisualiser (compositions QuizOrthographe, QuizChinois, QuizFrancais)
 ```
+
+Sans `--quiz` ni variable `QUIZ`, seul le quiz d'orthographe est généré (comme avant).
 
 Si Remotion ne trouve pas Chrome : `CHROME_PATH=/chemin/vers/chrome npm run render`.
 
@@ -33,6 +46,42 @@ Tout est automatique, dans `scripts/mots.mjs` :
 
 Résultat : ~1 700 mots, soit ~170 vidéos sans répétition. `data/historique.json` garde la
 trace des mots déjà publiés pour ne jamais les réutiliser.
+
+## Quiz de chinois et de français : d'où viennent les mots
+
+Les deux quiz partagent `data/vocabulaire.txt` : ~390 mots courants (niveau HSK 1 à 3 environ), avec
+caractères, pinyin, traduction française (avec article), traduction anglaise et catégorie. Soit ~77 vidéos par quiz à 5 mots.
+
+- Les vidéos avancent **du niveau 1 au niveau 3** au fil des jours, en variant les catégories dans une vidéo.
+- Les 2 mauvaises réponses sont tirées **dans la même catégorie** (ex. trois animaux) pour que ce ne soit pas trop facile.
+- Les mots trop proches (孩子 « l'enfant » / 儿子 « le fils », 看 « regarder » / 读 « lire »…) portent un même
+  **groupe** et ne sont jamais proposés ensemble : il n'y a qu'une seule bonne réponse.
+- Pour prolonger la série, il suffit d'ajouter des lignes au fichier (le format est expliqué en tête).
+  Chaque quiz a son historique (`historique-chinois.json`, `historique-francais.json`) : un mot déjà
+  passé dans le quiz de chinois peut encore servir dans celui de français.
+
+Les caractères chinois utilisent les polices **Noto Sans SC** et **Noto Serif SC** embarquées (`@fontsource/…`) :
+rendu identique sur le serveur, sans police à installer.
+
+### Habillage
+
+Chaque quiz a son thème dans `src/themes.tsx` (couleurs, polices, textes, décor). Le quiz de chinois a un
+habillage d'inspiration chinoise : fond laque rouge, filets et grecques « 回 » dorés aux coins, sceau 中文 à
+l'ouverture, grand caractère 学 en filigrane, fleurs de prunier qui tombent lentement, police à empattements.
+
+## Publier sur Xiaohongshu (quiz `francais`)
+
+Xiaohongshu n'a pas d'API de publication ouverte aux particuliers, donc pas de brouillon automatique.
+À la place, avec `DISCORD_WEBHOOK_URL`, tu reçois sur Discord :
+
+1. un message avec **le titre** seul (20 caractères max, facile à copier) ;
+2. un message avec **le texte** (accroche, liste des mots du jour, hashtags), **la vidéo** et **la couverture** en pièces jointes.
+
+Sur le téléphone : enregistre la vidéo et la couverture, ouvre Xiaohongshu → « + » → choisis la vidéo,
+mets la couverture, colle le titre et le texte, publie. Discord limite les pièces jointes à 10 Mo par message
+(serveur sans boost) ; les vidéos font ~7,5 Mo. Si ton serveur Discord est boosté, `DISCORD_LIMITE_MO` peut être augmenté.
+
+⚠ Sur un serveur, `out/` disparaît à chaque lancement du conteneur : **sans Discord, la vidéo Xiaohongshu est perdue.**
 
 ## Numéro du jour
 
@@ -70,7 +119,7 @@ notification, tu colles la légende, tu ajoutes un son et tu publies. TikTok gar
 1. https://developers.tiktok.com → connecte-toi avec ton compte TikTok → **Manage apps → Connect an app**.
 2. Coche la plateforme **Web**, ajoute **Login Kit** et **Content Posting API**
    (scopes `user.info.basic` et `video.upload`, pas besoin de « Direct Post »).
-3. Login Kit → Web → **Redirect URI** : `https://xavierbriole.github.io/quiz-orthographe/callback.html` (page `docs/callback.html`, hébergée par GitHub Pages)
+3. Login Kit → Web → **Redirect URI** : `https://xavierbriole.github.io/quiz-langues/callback.html` (page `docs/callback.html`, hébergée par GitHub Pages)
 4. Crée une **Sandbox** et ajoute **ton compte TikTok** dans *Target users*
    (permet d'utiliser l'API sur ton compte sans faire valider l'app).
 5. Note le **Client key** et le **Client secret** de la sandbox.
@@ -101,26 +150,46 @@ la vidéo du jour, puis s'arrête : configure-le en **tâche planifiée** (cron)
 | `TIKTOK_REFRESH_TOKEN` | Valeur affichée par l'étape « connexion » (sert seulement au 1er lancement) |
 | `DATA_DIR` | Dossier persistant, `/data` par défaut dans le Dockerfile |
 | `NB_MOTS` | Nombre de mots par vidéo (défaut 5) |
+| `QUIZ` | Quiz à générer à chaque lancement, séparés par des virgules (défaut `orthographe`). Ex. `orthographe,chinois,francais` |
+| `TIKTOK_REFRESH_TOKEN_CHINOIS` | Compte TikTok dédié au quiz de chinois, en anglais (voir plus bas) |
+| `QUALITE` | Facultatif : compression h264 (CRF, défaut 23 ; plus haut = plus léger) |
+| `DISCORD_LIMITE_MO` | Facultatif : taille max des pièces jointes Discord en Mo (défaut 10) |
 | `DISCORD_WEBHOOK_URL` | Facultatif mais conseillé : webhook Discord pour les notifications (Paramètres du serveur → Intégrations → Webhooks) |
 
 ### ⚠ Le volume persistant est obligatoire
 
 Monte un volume (disque) sur `/data`. Il garde :
-- `historique.json` : les mots déjà publiés (sans lui, des mots reviendraient) ;
-- `tiktok-token.json` : l'accès TikTok, renouvelé à chaque envoi. **Sans volume, l'accès est perdu
+- `historique.json`, `historique-chinois.json`, `historique-francais.json` : les mots déjà publiés
+  (sans eux, des mots reviendraient) ;
+- `tiktok-token.json` (et `tiktok-token-chinois.json` si compte dédié) : l'accès TikTok, renouvelé à chaque envoi. **Sans volume, l'accès est perdu
   au redémarrage suivant et il faut refaire la connexion.**
 
 ### Ce que tu reçois sur Discord (via `DISCORD_WEBHOOK_URL`)
 
-- ✅ un message avec la légende en texte et une card « Jour 12 prêt dans TikTok » (mots, n° de vidéo, durée) : « Copier le texte » ne copie que la légende ;
+- ✅ un message avec la légende en texte et une card « Orthographe – jour 12 prêt dans TikTok » (mots, n° de vidéo, durée) : « Copier le texte » ne copie que la légende ;
 - ❌ « échec » avec la raison (dans ce cas les mots ne sont pas consommés, ils resteront pour la suivante) ;
-- ⚠ « stock bas » quand il reste moins de 20 vidéos de mots inédits.
+- ⚠ « stock bas » quand il reste moins de 20 vidéos de mots inédits (par quiz) ;
+- 📕 pour le quiz `francais` : le titre, puis le texte + la vidéo + la couverture à publier sur Xiaohongshu (voir plus haut).
 
 Sans `DISCORD_WEBHOOK_URL`, tout part dans les logs du service. TikTok t'envoie de toute façon sa propre
 notification quand le brouillon arrive.
+
+### Le compte TikTok du quiz de chinois (en anglais)
+
+Le quiz de chinois vise un public anglophone : il ne part **jamais** sur le compte principal (francophone).
+Tant que son compte n'est pas connecté, la vidéo est envoyée sur Discord avec la légende, pour la publier à la main.
+
+1. Crée le compte TikTok.
+2. Dans l'app TikTok (developers.tiktok.com), ajoute ce compte dans les *Target users* de la sandbox.
+3. Sur ton ordinateur, déconnecte-toi de TikTok dans le navigateur puis :
+   `node scripts/tiktok.mjs connexion chinois` (en te connectant avec ce compte).
+4. Mets la valeur affichée dans la variable `TIKTOK_REFRESH_TOKEN_CHINOIS` du serveur, puis supprime
+   `data/tiktok-token-chinois.json` de ton ordinateur.
+
+Dès que ce compte est connecté, les vidéos de chinois arrivent en brouillon dans sa boîte TikTok.
 
 **Si la sandbox ne suffit pas** (erreur d'autorisation à l'envoi), il faut soumettre l'app à
 validation (onglet *App review*) : description, liens vers une politique de confidentialité et des
 conditions d'utilisation, et une courte vidéo de démo.
 
-Ne partage jamais `config/tiktok.json`, `TIKTOK_CLIENT_SECRET` ni le refresh token.
+Ne partage jamais `config/tiktok.json`, `TIKTOK_CLIENT_SECRET` ni les refresh tokens.

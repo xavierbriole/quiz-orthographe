@@ -1,0 +1,56 @@
+{
+  "type": "chinois",
+  "titre": "Chinese quiz",
+  "questions": [
+    {
+      "mot": "打电话",
+      "pinyin": "dǎ diànhuà",
+      "options": [
+        "to look for",
+        "to rest",
+        "to call"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "mot": "大",
+      "pinyin": "dà",
+      "options": [
+        "spicy",
+        "big",
+        "busy"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "mot": "晚上",
+      "pinyin": "wǎnshang",
+      "options": [
+        "now",
+        "evening",
+        "week"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "mot": "男人",
+      "pinyin": "nánrén",
+      "options": [
+        "man",
+        "son",
+        "dad"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "mot": "面包",
+      "pinyin": "miànbāo",
+      "options": [
+        "bread",
+        "salad",
+        "pork"
+      ],
+      "correctIndex": 0
+    }
+  ]
+}
