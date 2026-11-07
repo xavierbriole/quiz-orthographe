@@ -12,6 +12,7 @@ const ENVOI_TIKTOK = true; // envoyer chaque vidéo en brouillon sur TikTok (si 
 const SONS = true; // bruitages : tic-tac, ding sur la bonne réponse, whoosh
 const MUSIQUE = "musique.mp3"; // musique de fond dans public/ (ignorée si le fichier n'existe pas)
 const VOLUME_MUSIQUE = 0.15; // 0 à 1 : reste discrète sous les bruitages
+const QUALITE = 23; // CRF h264 : plus haut = fichier plus léger (23 ≈ 7-9 Mo, sous la limite de 10 Mo de Discord)
 
 import fs from "node:fs";
 import path from "node:path";
@@ -45,7 +46,7 @@ async function genererQuiz(nom, serveUrl) {
       couleur: COULEURS.attention,
     });
 
-  const tiktok = quiz.plateforme === "tiktok" && ENVOI_TIKTOK ? compteTikTok(quiz.compteTikTok) : null;
+  const tiktok = quiz.plateforme === "tiktok" && ENVOI_TIKTOK ? compteTikTok(quiz.compteTikTok, quiz.compteObligatoire) : null;
 
   for (let v = 0; v < nbVideos; v++) {
     const num = String(historique.length + 1).padStart(3, "0");
@@ -74,6 +75,7 @@ async function genererQuiz(nom, serveUrl) {
       serveUrl,
       codec: "h264",
       x264Preset: "veryfast",
+      crf: Number(process.env.QUALITE ?? QUALITE),
       outputLocation: sortie,
       inputProps,
       browserExecutable,
@@ -118,7 +120,13 @@ async function genererQuiz(nom, serveUrl) {
         { copiable: legende, champs, fichiers }
       );
     } else if (quiz.plateforme === "tiktok" && ENVOI_TIKTOK) {
-      console.log("ℹ TikTok non connecté : vidéo générée mais non envoyée (voir README)");
+      console.log("ℹ TikTok non connecté : vidéo générée mais non envoyée en brouillon (voir README)");
+      // Sur le serveur, out/ est perdu : on envoie la vidéo sur Discord pour pouvoir la publier à la main
+      await notifier(
+        `${quiz.libelle} – jour ${jour} : compte TikTok non connecté`,
+        "Vidéo jointe : enregistre-la et publie-la à la main sur TikTok (légende ci-dessus).",
+        { copiable: legende, couleur: COULEURS.attention, champs, fichiers }
+      );
     }
 
     mots.forEach((m) => dejaUtilises.add(m));

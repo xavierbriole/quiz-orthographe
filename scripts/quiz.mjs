@@ -31,26 +31,28 @@ export const QUIZ = {
       ].join(" "),
   },
 
-  // Apprendre le chinois, public francophone → TikTok
+  // Apprendre le chinois, public ANGLOPHONE (plus large) → TikTok. Interface et réponses en anglais.
   chinois: {
-    libelle: "Chinois",
+    libelle: "Chinois (anglais)",
     composition: "QuizChinois",
     historique: "historique-chinois.json",
     prefixe: "chinois",
     plateforme: "tiktok",
-    // Compte TikTok dédié, utilisé seulement s'il a été connecté (sinon : le compte principal)
+    // Compte TikTok dédié (public anglophone) : jamais le compte principal, qui est francophone.
+    // Tant qu'il n'est pas connecté, la vidéo est envoyée sur Discord pour être publiée à la main.
     compteTikTok: "chinois",
+    compteObligatoire: true,
     pool: construirePoolVocab,
     video: (pool, deja, n, graine) => construireVideoVocab(pool, deja, n, graine, "chinois"),
     stockEpuise: "Plus assez de mots inédits : ajoute des mots dans data/vocabulaire.txt",
     legende: ({ jour, n }) =>
-      `Quiz de chinois du jour ${jour} 🇨🇳 ${n} mots de chinois : tu en connais combien ? ` +
-      `Dis ton score en commentaire 👇\n\n` +
+      `Chinese quiz, day ${jour} 🇨🇳 ${n} Chinese words: how many do you know? ` +
+      `Comment your score 👇 Follow for a new quiz every day!\n\n` +
       [
-        ...["#chinois", "#apprendrelechinois", "#mandarin", "#apprendresurtiktok"],
+        ...["#learnchinese", "#chinese", "#mandarin", "#learnontiktok"],
         ...tourner(
-          ["#quiz", "#chine", "#languechinoise", "#vocabulaire", "#hsk",
-           "#apprendreunelangue", "#polyglotte", "#défi", "#culturegénérale", "#langues"],
+          ["#chineselanguage", "#mandarinchinese", "#studychinese", "#hsk", "#chinesecharacters",
+           "#languagelearning", "#learnmandarin", "#quiz", "#vocabulary", "#polyglot"],
           jour
         ),
       ].join(" "),

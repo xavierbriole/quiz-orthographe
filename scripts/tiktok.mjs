@@ -21,9 +21,13 @@ function compteConnecte(compte) {
   return Boolean(cfg.client_key && cfg.client_secret && (fs.existsSync(fichierToken(compte)) || refreshInitial(compte)));
 }
 
-/** Le compte à utiliser : le compte dédié s'il est connecté, sinon le compte principal (ou null si aucun). */
-export function compteTikTok(compteDedie) {
+/**
+ * Le compte à utiliser : le compte dédié s'il est connecté, sinon le compte principal
+ * (sauf si `obligatoire` : alors null). null = aucun compte utilisable.
+ */
+export function compteTikTok(compteDedie, obligatoire = false) {
   if (compteDedie && compteConnecte(compteDedie)) return { compte: compteDedie };
+  if (compteDedie && obligatoire) return null;
   return compteConnecte(null) ? { compte: null } : null;
 }
 

@@ -1,4 +1,4 @@
-// Lit data/vocabulaire.txt (liste bilingue chinois ⇄ français) pour les quiz « chinois » et « francais ».
+// Lit data/vocabulaire.txt (liste chinois ⇄ français ⇄ anglais) pour les quiz « chinois » et « francais ».
 import fs from "node:fs";
 
 const FICHIER = "data/vocabulaire.txt";
@@ -15,7 +15,7 @@ function analyserFrancais(brut, categorie) {
   return { fr, tag };
 }
 
-/** @returns {{mot: string, hanzi: string, pinyin: string, fr: string, tag: string|null, categorie: string, niveau: number, groupe: string|null}[]} */
+/** @returns {{mot: string, hanzi: string, pinyin: string, fr: string, en: string, tag: string|null, categorie: string, niveau: number, groupe: string|null}[]} */
 export function construirePoolVocab() {
   const pool = [];
   const vus = new Set();
@@ -29,12 +29,12 @@ export function construirePoolVocab() {
       categorie = cat[1];
       continue;
     }
-    const [hanzi, pinyin, brut, niveau, groupe] = l.split("|").map((s) => s?.trim());
-    if (!hanzi || !pinyin || !brut || !niveau || !categorie)
+    const [hanzi, pinyin, brut, en, niveau, groupe] = l.split("|").map((s) => s?.trim());
+    if (!hanzi || !pinyin || !brut || !en || !/^[123]$/.test(niveau ?? "") || !categorie)
       throw new Error(`${FICHIER} ligne ${i + 1} invalide : « ${l} »`);
     if (vus.has(hanzi)) throw new Error(`${FICHIER} : « ${hanzi} » apparaît deux fois`);
     vus.add(hanzi);
-    pool.push({ mot: hanzi, hanzi, pinyin, ...analyserFrancais(brut, categorie), categorie, niveau: Number(niveau), groupe: groupe || null });
+    pool.push({ mot: hanzi, hanzi, pinyin, ...analyserFrancais(brut, categorie), en, categorie, niveau: Number(niveau), groupe: groupe || null });
   }
   return pool;
 }

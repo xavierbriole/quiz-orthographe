@@ -59,11 +59,11 @@ export function construireVideo(pool, dejaUtilises, nbMots, graine) {
 /**
  * Choisit les mots d'une vidéo de vocabulaire, du niveau le plus facile au plus difficile au fil des jours,
  * et tire 2 mauvaises réponses dans la même catégorie (jamais deux mots d'un même groupe de sens proche).
- * @param {{mot: string, hanzi: string, pinyin: string, fr: string, tag: string|null, categorie: string, niveau: number, groupe: string|null}[]} pool
+ * @param {{mot: string, hanzi: string, pinyin: string, fr: string, en: string, tag: string|null, categorie: string, niveau: number, groupe: string|null}[]} pool
  * @param {Set<string>} dejaUtilises
  * @param {number} nbMots
  * @param {number} graine
- * @param {"chinois"|"francais"} type chinois : 汉字 → français ; francais : mot français → 汉字
+ * @param {"chinois"|"francais"} type chinois : 汉字 → anglais ; francais : mot français → 汉字
  */
 export function construireVideoVocab(pool, dejaUtilises, nbMots, graine, type) {
   const rand = rng(graine);
@@ -81,7 +81,7 @@ export function construireVideoVocab(pool, dejaUtilises, nbMots, graine, type) {
     if (choisis.length < nbMots && e.niveau <= niveauMax && !choisis.some((c) => c.categorie === e.categorie)) choisis.push(e);
   for (const e of dispo) if (choisis.length < nbMots && !choisis.includes(e)) choisis.push(e);
 
-  const reponse = (e) => (type === "chinois" ? e.fr : e.hanzi);
+  const reponse = (e) => (type === "chinois" ? e.en : e.hanzi);
   const questions = shuffle(choisis, rand).map((e) => {
     const compatibles = (x) => x !== e && (!e.groupe || x.groupe !== e.groupe) && reponse(x) !== reponse(e);
     let candidats = pool.filter((x) => x.categorie === e.categorie && compatibles(x));
@@ -91,8 +91,8 @@ export function construireVideoVocab(pool, dejaUtilises, nbMots, graine, type) {
     const f2 = reste.find((x) => (!f1.groupe || x.groupe !== f1.groupe) && reponse(x) !== reponse(f1)) ?? reste[0];
     const options = shuffle([reponse(e), reponse(f1), reponse(f2)], rand);
     return type === "chinois"
-      ? { mot: e.hanzi, pinyin: e.pinyin, options, correctIndex: options.indexOf(e.fr) }
+      ? { mot: e.hanzi, pinyin: e.pinyin, options, correctIndex: options.indexOf(e.en) }
       : { mot: e.fr, tag: e.tag, options, correctIndex: options.indexOf(e.hanzi) };
   });
-  return { titre: type === "chinois" ? "Quiz chinois" : "法语单词挑战", questions, mots: choisis.map((e) => e.mot) };
+  return { titre: type === "chinois" ? "Chinese quiz" : "法语单词挑战", questions, mots: choisis.map((e) => e.mot) };
 }
