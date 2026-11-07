@@ -139,8 +139,25 @@ renouvellement, une seule machine doit s'en servir.
 
 ## Déploiement sur un serveur
 
-Le `Dockerfile` contient tout (Chrome headless, police embarquée). Le conteneur génère et envoie
+Le `Dockerfile` contient tout (Chrome headless, polices embarquées). Le conteneur génère et envoie
 la vidéo du jour, puis s'arrête : configure-le en **tâche planifiée** (cron) une fois par jour.
+
+### Sur Railway : un service par quiz
+
+Les trois services partent du même dépôt (branche `main`) et de la même image ; seule la variable `QUIZ`,
+l'horaire et le volume changent. Chaque quiz publie ainsi à l'heure de son public, et une panne n'emporte pas les autres.
+
+| Service | `QUIZ` | Cron (UTC) | Heure de Paris (hiver / été) | Volume `/data` |
+|---|---|---|---|---|
+| `generateur` | `orthographe` | `0 8 * * *` | 9h / 10h | historique + accès TikTok principal |
+| `francais` | `francais` | `0 11 * * *` | 12h / 13h (19h–20h à Pékin) | historique |
+| `chinois` | `chinois` | `0 13 * * *` | 14h / 15h | historique + accès TikTok « chinois » |
+
+Railway compte les horaires en UTC : à l'heure d'été, tout part une heure plus tard à Paris.
+Les services `chinois` et `francais` reprennent `DISCORD_WEBHOOK_URL`, `NB_MOTS` (et les identifiants de l'app
+TikTok pour `chinois`) par référence à `generateur` (`${{generateur.NOM}}`) : à modifier à un seul endroit.
+**Ne jamais mettre `TIKTOK_REFRESH_TOKEN` sur un autre service que `generateur`** : deux services qui utilisent
+le même accès TikTok se l'invalident mutuellement.
 
 ### Variables d'environnement
 
@@ -150,8 +167,8 @@ la vidéo du jour, puis s'arrête : configure-le en **tâche planifiée** (cron)
 | `TIKTOK_REFRESH_TOKEN` | Valeur affichée par l'étape « connexion » (sert seulement au 1er lancement) |
 | `DATA_DIR` | Dossier persistant, `/data` par défaut dans le Dockerfile |
 | `NB_MOTS` | Nombre de mots par vidéo (défaut 5) |
-| `QUIZ` | Quiz à générer à chaque lancement, séparés par des virgules (défaut `orthographe`). Ex. `orthographe,chinois,francais` |
-| `TIKTOK_REFRESH_TOKEN_CHINOIS` | Compte TikTok dédié au quiz de chinois, en anglais (voir plus bas) |
+| `QUIZ` | Quiz à générer à chaque lancement (défaut `orthographe`). Un seul par service sur Railway ; plusieurs possibles, séparés par des virgules |
+| `TIKTOK_REFRESH_TOKEN_CHINOIS` | Compte TikTok dédié au quiz de chinois, en anglais (sur le service `chinois`, voir plus bas) |
 | `QUALITE` | Facultatif : compression h264 (CRF, défaut 23 ; plus haut = plus léger) |
 | `DISCORD_LIMITE_MO` | Facultatif : taille max des pièces jointes Discord en Mo (défaut 10) |
 | `DISCORD_WEBHOOK_URL` | Facultatif mais conseillé : webhook Discord pour les notifications (Paramètres du serveur → Intégrations → Webhooks) |
@@ -183,7 +200,7 @@ Tant que son compte n'est pas connecté, la vidéo est envoyée sur Discord avec
 2. Dans l'app TikTok (developers.tiktok.com), ajoute ce compte dans les *Target users* de la sandbox.
 3. Sur ton ordinateur, déconnecte-toi de TikTok dans le navigateur puis :
    `node scripts/tiktok.mjs connexion chinois` (en te connectant avec ce compte).
-4. Mets la valeur affichée dans la variable `TIKTOK_REFRESH_TOKEN_CHINOIS` du serveur, puis supprime
+4. Mets la valeur affichée dans la variable `TIKTOK_REFRESH_TOKEN_CHINOIS` du service Railway `chinois`, puis supprime
    `data/tiktok-token-chinois.json` de ton ordinateur.
 
 Dès que ce compte est connecté, les vidéos de chinois arrivent en brouillon dans sa boîte TikTok.
