@@ -1,5 +1,5 @@
 {
   "client_key": "COLLE_ICI_TON_CLIENT_KEY",
   "client_secret": "COLLE_ICI_TON_CLIENT_SECRET",
-  "redirect_uri": "https://xavierbriole.github.io/quiz-orthographe/callback.html"
+  "redirect_uri": "https://xavierbriole.github.io/quiz-langues/callback.html"
 }

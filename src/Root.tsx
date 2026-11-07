@@ -1,5 +1,5 @@
 import React from "react";
-import { Composition, Still } from "remotion";
+import { Composition } from "remotion";
 // Polices embarquées : rendu identique sur n'importe quel serveur
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
@@ -14,7 +14,6 @@ import "@fontsource/noto-serif-sc/500.css";
 import "@fontsource/noto-serif-sc/700.css";
 import "@fontsource/noto-serif-sc/900.css";
 import { Quiz, QuizProps, dureeTotale } from "./Quiz";
-import { PhotoProfil } from "./PhotoProfil";
 // Exemples pour la prévisualisation (Studio). Le rendu réel passe des mots inédits via scripts/render.mjs
 import exemple from "../data/exemple.json";
 import exempleChinois from "../data/exemple-chinois.json";
@@ -43,6 +42,5 @@ export const RemotionRoot: React.FC = () => (
         })}
       />
     ))}
-    <Still id="PhotoProfilChinois" component={PhotoProfil} width={1080} height={1080} />
   </>
 );

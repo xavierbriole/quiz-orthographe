@@ -16,7 +16,7 @@ export const chemin = (f) => path.join(DATA_DIR, f);
 export const tiktok = {
   client_key: process.env.TIKTOK_CLIENT_KEY || fichierLocal.client_key,
   client_secret: process.env.TIKTOK_CLIENT_SECRET || fichierLocal.client_secret,
-  redirect_uri: process.env.TIKTOK_REDIRECT_URI || fichierLocal.redirect_uri || "https://xavierbriole.github.io/quiz-orthographe/callback.html",
+  redirect_uri: process.env.TIKTOK_REDIRECT_URI || fichierLocal.redirect_uri || "https://xavierbriole.github.io/quiz-langues/callback.html",
   // Utilisé une seule fois pour amorcer le serveur, tant qu'aucun token n'est sauvegardé dans DATA_DIR
   refresh_token_initial: process.env.TIKTOK_REFRESH_TOKEN,
 };

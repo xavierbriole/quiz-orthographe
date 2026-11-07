@@ -1,4 +1,4 @@
-# Quiz orthographe – générateur automatique de vidéos TikTok
+# Quiz langues – générateur automatique de vidéos quiz (TikTok, Xiaohongshu)
 
 Vidéos verticales 1080×1920 de 10 mots (~100 s) : intro → 10 questions (3 choix,
 7 s de réflexion, réponse) → appel à commenter. **Aucun mot à saisir.**
@@ -22,7 +22,6 @@ node scripts/render.mjs --quiz=chinois  # quiz de chinois → out/chinois-001.mp
 node scripts/render.mjs --quiz=francais # quiz de français → out/francais-001.mp4 + -couverture.png + .txt (titre + texte)
 node scripts/render.mjs --quiz=orthographe,chinois,francais   # les trois d'un coup
 npm run studio                          # prévisualiser (compositions QuizOrthographe, QuizChinois, QuizFrancais)
-npm run photo-profil                    # photo de profil du compte TikTok chinois → assets/photo-profil-chinois.png
 ```
 
 Sans `--quiz` ni variable `QUIZ`, seul le quiz d'orthographe est généré (comme avant).
@@ -69,7 +68,6 @@ rendu identique sur le serveur, sans police à installer.
 Chaque quiz a son thème dans `src/themes.tsx` (couleurs, polices, textes, décor). Le quiz de chinois a un
 habillage d'inspiration chinoise : fond laque rouge, filets et grecques « 回 » dorés aux coins, sceau 中文 à
 l'ouverture, grand caractère 学 en filigrane, fleurs de prunier qui tombent lentement, police à empattements.
-La photo de profil du compte (`assets/photo-profil-chinois.png`) reprend ce style : `npm run photo-profil`.
 
 ## Publier sur Xiaohongshu (quiz `francais`)
 
@@ -121,7 +119,7 @@ notification, tu colles la légende, tu ajoutes un son et tu publies. TikTok gar
 1. https://developers.tiktok.com → connecte-toi avec ton compte TikTok → **Manage apps → Connect an app**.
 2. Coche la plateforme **Web**, ajoute **Login Kit** et **Content Posting API**
    (scopes `user.info.basic` et `video.upload`, pas besoin de « Direct Post »).
-3. Login Kit → Web → **Redirect URI** : `https://xavierbriole.github.io/quiz-orthographe/callback.html` (page `docs/callback.html`, hébergée par GitHub Pages)
+3. Login Kit → Web → **Redirect URI** : `https://xavierbriole.github.io/quiz-langues/callback.html` (page `docs/callback.html`, hébergée par GitHub Pages)
 4. Crée une **Sandbox** et ajoute **ton compte TikTok** dans *Target users*
    (permet d'utiliser l'API sur ton compte sans faire valider l'app).
 5. Note le **Client key** et le **Client secret** de la sandbox.
@@ -181,7 +179,7 @@ notification quand le brouillon arrive.
 Le quiz de chinois vise un public anglophone : il ne part **jamais** sur le compte principal (francophone).
 Tant que son compte n'est pas connecté, la vidéo est envoyée sur Discord avec la légende, pour la publier à la main.
 
-1. Crée le compte TikTok (photo de profil : `assets/photo-profil-chinois.png`).
+1. Crée le compte TikTok.
 2. Dans l'app TikTok (developers.tiktok.com), ajoute ce compte dans les *Target users* de la sandbox.
 3. Sur ton ordinateur, déconnecte-toi de TikTok dans le navigateur puis :
    `node scripts/tiktok.mjs connexion chinois` (en te connectant avec ce compte).

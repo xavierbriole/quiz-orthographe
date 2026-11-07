@@ -1,12 +1,11 @@
 {
-  "name": "quiz-orthographe",
+  "name": "quiz-langues",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "render": "node scripts/render.mjs",
-    "photo-profil": "remotion still src/index.ts PhotoProfilChinois assets/photo-profil-chinois.png"
+    "render": "node scripts/render.mjs"
   },
   "keywords": [],
   "author": "",
