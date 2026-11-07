@@ -155,12 +155,13 @@ l'horaire et le volume changent. Chaque quiz publie ainsi à l'heure de son publ
 
 Railway compte les horaires en UTC : à l'heure d'été, tout part une heure plus tard à Paris.
 
-Les valeurs communes sont des **variables partagées** du projet (Project Settings → Shared Variables) :
-`TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `DISCORD_WEBHOOK_URL`, `NB_MOTS`. Chaque service les reprend
-par référence (`${{shared.NOM}}`) : on les modifie à un seul endroit.
-Propres à chaque service : `QUIZ`, `DATA_DIR=/data`, et l'accès TikTok — `TIKTOK_REFRESH_TOKEN` sur `orthographe`,
-`TIKTOK_REFRESH_TOKEN_CHINOIS` sur `chinois`. **Ne jamais mettre un même accès TikTok sur deux services** :
-ils se l'invalideraient mutuellement.
+Un 4e service, `generateur`, ne génère rien : il porte les **variables communes**
+(`TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `DISCORD_WEBHOOK_URL`, `NB_MOTS`). Les trois services de quiz les
+reprennent par référence (`${{generateur.NOM}}`) : on les modifie à un seul endroit. Il n'a pas de cron et sa
+commande de lancement se contente d'afficher un message.
+Propres à chaque service de quiz : `QUIZ`, `DATA_DIR=/data`, et l'accès TikTok — `TIKTOK_REFRESH_TOKEN` sur
+`orthographe`, `TIKTOK_REFRESH_TOKEN_CHINOIS` sur `chinois`. **Ne jamais mettre un même accès TikTok sur deux
+services** : ils se l'invalideraient mutuellement.
 
 ### Variables d'environnement
 
