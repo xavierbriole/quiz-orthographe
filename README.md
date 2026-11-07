@@ -149,15 +149,19 @@ l'horaire et le volume changent. Chaque quiz publie ainsi à l'heure de son publ
 
 | Service | `QUIZ` | Cron (UTC) | Heure de Paris (hiver / été) | Volume `/data` |
 |---|---|---|---|---|
-| `generateur` | `orthographe` | `0 8 * * *` | 9h / 10h | historique + accès TikTok principal |
+| `orthographe` | `orthographe` | `0 8 * * *` | 9h / 10h | historique + accès TikTok principal |
 | `francais` | `francais` | `0 11 * * *` | 12h / 13h (19h–20h à Pékin) | historique |
 | `chinois` | `chinois` | `0 13 * * *` | 14h / 15h | historique + accès TikTok « chinois » |
 
 Railway compte les horaires en UTC : à l'heure d'été, tout part une heure plus tard à Paris.
-Les services `chinois` et `francais` reprennent `DISCORD_WEBHOOK_URL`, `NB_MOTS` (et les identifiants de l'app
-TikTok pour `chinois`) par référence à `generateur` (`${{generateur.NOM}}`) : à modifier à un seul endroit.
-**Ne jamais mettre `TIKTOK_REFRESH_TOKEN` sur un autre service que `generateur`** : deux services qui utilisent
-le même accès TikTok se l'invalident mutuellement.
+
+Un 4e service, `generateur`, ne génère rien : il porte les **variables communes**
+(`TIKTOK_CLIENT_KEY`, `TIKTOK_CLIENT_SECRET`, `DISCORD_WEBHOOK_URL`, `NB_MOTS`). Les trois services de quiz les
+reprennent par référence (`${{generateur.NOM}}`) : on les modifie à un seul endroit. Il n'a pas de cron et sa
+commande de lancement se contente d'afficher un message.
+Propres à chaque service de quiz : `QUIZ`, `DATA_DIR=/data`, et l'accès TikTok — `TIKTOK_REFRESH_TOKEN` sur
+`orthographe`, `TIKTOK_REFRESH_TOKEN_CHINOIS` sur `chinois`. **Ne jamais mettre un même accès TikTok sur deux
+services** : ils se l'invalideraient mutuellement.
 
 ### Variables d'environnement
 
