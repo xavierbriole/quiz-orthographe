@@ -53,3 +53,46 @@ export function construireVideo(pool, dejaUtilises, nbMots, graine) {
   });
   return { titre: "Quiz orthographe", questions };
 }
+
+// ---------- Quiz de vocabulaire (chinois / français) ----------
+
+/**
+ * Choisit les mots d'une vidéo de vocabulaire, du niveau le plus facile au plus difficile au fil des jours,
+ * et tire 2 mauvaises réponses dans la même catégorie (jamais deux mots d'un même groupe de sens proche).
+ * @param {{mot: string, hanzi: string, pinyin: string, fr: string, tag: string|null, categorie: string, niveau: number, groupe: string|null}[]} pool
+ * @param {Set<string>} dejaUtilises
+ * @param {number} nbMots
+ * @param {number} graine
+ * @param {"chinois"|"francais"} type chinois : 汉字 → français ; francais : mot français → 汉字
+ */
+export function construireVideoVocab(pool, dejaUtilises, nbMots, graine, type) {
+  const rand = rng(graine);
+  // Mélange puis tri stable par niveau : on épuise le niveau 1 avant de passer au 2, etc.
+  const dispo = shuffle(
+    pool.filter((e) => !dejaUtilises.has(e.mot)),
+    rand
+  ).sort((a, b) => a.niveau - b.niveau);
+  if (dispo.length < nbMots) throw new Error("Plus assez de mots inédits dans le pool");
+
+  // Varier les catégories dans une même vidéo, en restant dans les niveaux les plus bas
+  const niveauMax = dispo[nbMots - 1].niveau;
+  const choisis = [];
+  for (const e of dispo)
+    if (choisis.length < nbMots && e.niveau <= niveauMax && !choisis.some((c) => c.categorie === e.categorie)) choisis.push(e);
+  for (const e of dispo) if (choisis.length < nbMots && !choisis.includes(e)) choisis.push(e);
+
+  const reponse = (e) => (type === "chinois" ? e.fr : e.hanzi);
+  const questions = shuffle(choisis, rand).map((e) => {
+    const compatibles = (x) => x !== e && (!e.groupe || x.groupe !== e.groupe) && reponse(x) !== reponse(e);
+    let candidats = pool.filter((x) => x.categorie === e.categorie && compatibles(x));
+    if (candidats.length < 2) candidats = pool.filter(compatibles);
+    const [f1, ...reste] = shuffle(candidats, rand);
+    // La 2e mauvaise réponse ne doit pas être trop proche de la 1re non plus
+    const f2 = reste.find((x) => (!f1.groupe || x.groupe !== f1.groupe) && reponse(x) !== reponse(f1)) ?? reste[0];
+    const options = shuffle([reponse(e), reponse(f1), reponse(f2)], rand);
+    return type === "chinois"
+      ? { mot: e.hanzi, pinyin: e.pinyin, options, correctIndex: options.indexOf(e.fr) }
+      : { mot: e.fr, tag: e.tag, options, correctIndex: options.indexOf(e.hanzi) };
+  });
+  return { titre: type === "chinois" ? "Quiz chinois" : "法语单词挑战", questions, mots: choisis.map((e) => e.mot) };
+}

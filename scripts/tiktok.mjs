@@ -1,20 +1,33 @@
 // Envoi des vidéos en BROUILLON dans la boîte de réception TikTok (Content Posting API, scope video.upload).
 //
 //   node scripts/tiktok.mjs connexion            → une seule fois, SUR TON ORDINATEUR : connecte ton compte
-//   node scripts/tiktok.mjs envoyer out/x.mp4    → envoie une vidéo à la main
+//   node scripts/tiktok.mjs connexion chinois    → connecte un 2e compte, dédié au quiz de chinois (facultatif)
+//   node scripts/tiktok.mjs envoyer out/x.mp4 [chinois] → envoie une vidéo à la main
 import fs from "node:fs";
 import crypto from "node:crypto";
 import readline from "node:readline/promises";
 import { tiktok as cfg, chemin } from "./config.mjs";
 
-const TOKEN = chemin("tiktok-token.json");
 const API = "https://open.tiktokapis.com";
 
-export function tiktokConfigure() {
-  return Boolean(cfg.client_key && cfg.client_secret && (fs.existsSync(TOKEN) || cfg.refresh_token_initial));
+// Plusieurs comptes TikTok possibles : le compte principal (compte = null) et des comptes nommés
+// (ex. « chinois »), chacun avec son fichier d'accès et sa variable TIKTOK_REFRESH_TOKEN_<NOM>.
+const fichierToken = (compte) => chemin(compte ? `tiktok-token-${compte}.json` : "tiktok-token.json");
+const refreshInitial = (compte) =>
+  compte ? process.env[`TIKTOK_REFRESH_TOKEN_${compte.toUpperCase()}`] : cfg.refresh_token_initial;
+const nomCompte = (compte) => (compte ? `compte TikTok « ${compte} »` : "compte TikTok");
+
+function compteConnecte(compte) {
+  return Boolean(cfg.client_key && cfg.client_secret && (fs.existsSync(fichierToken(compte)) || refreshInitial(compte)));
 }
 
-async function appelToken(params) {
+/** Le compte à utiliser : le compte dédié s'il est connecté, sinon le compte principal (ou null si aucun). */
+export function compteTikTok(compteDedie) {
+  if (compteDedie && compteConnecte(compteDedie)) return { compte: compteDedie };
+  return compteConnecte(null) ? { compte: null } : null;
+}
+
+async function appelToken(params, compte) {
   if (!cfg.client_key || !cfg.client_secret) throw new Error("TIKTOK_CLIENT_KEY / TIKTOK_CLIENT_SECRET manquants");
   const r = await fetch(`${API}/v2/oauth/token/`, {
     method: "POST",
@@ -32,22 +45,26 @@ async function appelToken(params) {
     refresh_expire_le: maintenant + json.refresh_expires_in * 1000,
   };
   // TikTok renvoie un NOUVEAU refresh token à chaque fois et invalide l'ancien : on le sauvegarde tout de suite
-  fs.writeFileSync(TOKEN, JSON.stringify(token, null, 2));
+  fs.writeFileSync(fichierToken(compte), JSON.stringify(token, null, 2));
   return token;
 }
 
-async function accessToken() {
-  if (!fs.existsSync(TOKEN)) {
-    if (!cfg.refresh_token_initial) throw new Error("Compte non connecté (TIKTOK_REFRESH_TOKEN manquant)");
-    return (await appelToken({ grant_type: "refresh_token", refresh_token: cfg.refresh_token_initial })).access_token;
+async function accessToken(compte) {
+  const fichier = fichierToken(compte);
+  const variable = compte ? `TIKTOK_REFRESH_TOKEN_${compte.toUpperCase()}` : "TIKTOK_REFRESH_TOKEN";
+  if (!fs.existsSync(fichier)) {
+    const initial = refreshInitial(compte);
+    if (!initial) throw new Error(`${nomCompte(compte)} non connecté (${variable} manquant)`);
+    return (await appelToken({ grant_type: "refresh_token", refresh_token: initial }, compte)).access_token;
   }
-  const t = JSON.parse(fs.readFileSync(TOKEN, "utf8"));
+  const t = JSON.parse(fs.readFileSync(fichier, "utf8"));
   if (Date.now() < t.expire_le) return t.access_token;
-  if (Date.now() > t.refresh_expire_le) throw new Error("Connexion TikTok expirée : refais la connexion et mets à jour TIKTOK_REFRESH_TOKEN");
-  return (await appelToken({ grant_type: "refresh_token", refresh_token: t.refresh_token })).access_token;
+  if (Date.now() > t.refresh_expire_le)
+    throw new Error(`Connexion au ${nomCompte(compte)} expirée : refais la connexion et mets à jour ${variable}`);
+  return (await appelToken({ grant_type: "refresh_token", refresh_token: t.refresh_token }, compte)).access_token;
 }
 
-async function connexion() {
+async function connexion(compte) {
   const state = crypto.randomBytes(12).toString("hex");
   // PKCE : TikTok attend l'empreinte SHA-256 du verifier encodée en HEXADÉCIMAL (pas en base64url)
   const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
@@ -65,6 +82,7 @@ async function connexion() {
       code_challenge_method: "S256",
     });
 
+  if (compte) console.log(`\nConnexion du ${nomCompte(compte)} : connecte-toi à TikTok avec CE compte-là dans le navigateur.`);
   console.log("\n1. Ouvre ce lien dans ton navigateur et autorise l'app :\n\n" + url + "\n");
   console.log("2. Tu arrives ensuite sur la page de retour « Autorisation reçue ».");
   console.log("   Clique sur « Copier l'adresse » et colle-la ici.\n");
@@ -79,11 +97,12 @@ async function connexion() {
     code: retour.searchParams.get("code"),
     redirect_uri: cfg.redirect_uri,
     code_verifier,
-  });
-  console.log("\n✔ Compte TikTok connecté.");
+  }, compte);
+  const variable = compte ? `TIKTOK_REFRESH_TOKEN_${compte.toUpperCase()}` : "TIKTOK_REFRESH_TOKEN";
+  console.log(`\n✔ ${nomCompte(compte)[0].toUpperCase() + nomCompte(compte).slice(1)} connecté.`);
   console.log("\nPour le serveur, ajoute cette variable d'environnement :\n");
-  console.log(`TIKTOK_REFRESH_TOKEN=${token.refresh_token}\n`);
-  console.log("⚠ Puis SUPPRIME le fichier " + TOKEN + " de ton ordinateur et n'envoie plus de vidéo depuis ici :");
+  console.log(`${variable}=${token.refresh_token}\n`);
+  console.log("⚠ Puis SUPPRIME le fichier " + fichierToken(compte) + " de ton ordinateur et n'envoie plus de vidéo depuis ici :");
   console.log("  dès que le serveur utilise ce token, TikTok invalide la copie locale (et inversement).");
 }
 
@@ -99,8 +118,8 @@ async function api(route, corps, token) {
 }
 
 /** Envoie une vidéo dans la boîte de réception TikTok. Renvoie { publish_id, status }. */
-export async function envoyerBrouillon(cheminVideo) {
-  const token = await accessToken();
+export async function envoyerBrouillon(cheminVideo, compte = null) {
+  const token = await accessToken(compte);
   const video = fs.readFileSync(cheminVideo);
   const taille = video.length;
 
@@ -134,24 +153,27 @@ export async function envoyerBrouillon(cheminVideo) {
 }
 
 /** Affiche le statut d'un envoi. */
-export async function statut(publish_id) {
-  const token = await accessToken();
+export async function statut(publish_id, compte = null) {
+  const token = await accessToken(compte);
   return api("/v2/post/publish/status/fetch/", { publish_id }, token);
 }
 
 // ---------- Ligne de commande ----------
 if (import.meta.url === `file://${process.argv[1]}`) {
-  const [cmd, fichier] = process.argv.slice(2);
+  const [cmd, fichier, compteArg] = process.argv.slice(2);
   try {
-    if (cmd === "connexion") await connexion();
+    if (cmd === "connexion") await connexion(fichier || null); // ici le 2e argument est le nom du compte
     else if (cmd === "envoyer" && fichier) {
-      const { publish_id, status } = await envoyerBrouillon(fichier);
+      const { publish_id, status } = await envoyerBrouillon(fichier, compteArg || null);
       if (status === "SEND_TO_USER_INBOX" || status === "PUBLISH_COMPLETE")
         console.log("✔ Déposée dans ta boîte TikTok : ouvre l'appli, touche la notification et publie.");
       else console.log(`⏳ TikTok traite encore la vidéo. Vérifie plus tard : node scripts/tiktok.mjs statut ${publish_id}`);
     } else if (cmd === "statut" && fichier) {
-      console.log(await statut(fichier));
-    } else console.log("Usage : node scripts/tiktok.mjs connexion | envoyer <fichier.mp4> | statut <publish_id>");
+      console.log(await statut(fichier, compteArg || null));
+    } else
+      console.log(
+        "Usage : node scripts/tiktok.mjs connexion [compte] | envoyer <fichier.mp4> [compte] | statut <publish_id> [compte]"
+      );
   } catch (e) {
     console.error("✖ " + e.message);
     process.exit(1);

@@ -1,0 +1,56 @@
+{
+  "type": "francais",
+  "titre": "法语单词挑战",
+  "questions": [
+    {
+      "mot": "l'école",
+      "tag": "n.f.",
+      "options": [
+        "医院",
+        "面包店",
+        "学校"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "mot": "l'avion",
+      "tag": "n.m.",
+      "options": [
+        "飞机",
+        "地铁",
+        "火车"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "mot": "la banane",
+      "tag": "n.f.",
+      "options": [
+        "香蕉",
+        "黄瓜",
+        "樱桃"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "mot": "la petite sœur",
+      "tag": "n.f.",
+      "options": [
+        "邻居",
+        "哥哥",
+        "妹妹"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "mot": "acheter",
+      "tag": "v.",
+      "options": [
+        "买",
+        "学习",
+        "跑"
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

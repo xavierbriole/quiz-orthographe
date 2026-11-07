@@ -1,0 +1,56 @@
+{
+  "type": "chinois",
+  "titre": "Quiz chinois",
+  "questions": [
+    {
+      "mot": "打电话",
+      "pinyin": "dǎ diànhuà",
+      "options": [
+        "chercher",
+        "se reposer",
+        "téléphoner"
+      ],
+      "correctIndex": 2
+    },
+    {
+      "mot": "大",
+      "pinyin": "dà",
+      "options": [
+        "épicé",
+        "grand",
+        "occupé"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "mot": "晚上",
+      "pinyin": "wǎnshang",
+      "options": [
+        "maintenant",
+        "le soir",
+        "la semaine"
+      ],
+      "correctIndex": 1
+    },
+    {
+      "mot": "男人",
+      "pinyin": "nánrén",
+      "options": [
+        "l'homme",
+        "le fils",
+        "le papa"
+      ],
+      "correctIndex": 0
+    },
+    {
+      "mot": "面包",
+      "pinyin": "miànbāo",
+      "options": [
+        "le pain",
+        "la salade",
+        "le porc"
+      ],
+      "correctIndex": 0
+    }
+  ]
+}

@@ -1,0 +1,434 @@
+# Vocabulaire bilingue chinois ⇄ français, partagé par deux quiz :
+#   - « chinois »  : on montre le caractère + pinyin, il faut trouver le sens en français (TikTok)
+#   - « francais » : on montre le mot français, il faut trouver le sens en chinois (Xiaohongshu)
+#
+# Format : 汉字|pinyin|français|niveau[|groupe]
+#   - « [nom] » ouvre une catégorie : les 2 mauvaises réponses sont tirées dans la même catégorie.
+#   - niveau 1 → 3 : les vidéos avancent du plus facile au plus difficile.
+#   - groupe (facultatif) : des mots trop proches (ex. 孩子 « l'enfant » / 儿子 « le fils ») ne sont
+#     jamais proposés ensemble, pour qu'il n'y ait toujours qu'une seule bonne réponse.
+#   - Noms français AVEC article. Si l'article ne dit pas le genre (l', les), ajouter (m.) ou (f.) :
+#     il s'affiche « n.f. » / « n.m. » dans le quiz de français et disparaît dans le quiz de chinois.
+
+[animaux]
+猫|māo|le chat|1
+狗|gǒu|le chien|1
+鸟|niǎo|l'oiseau (m.)|1
+鱼|yú|le poisson|1
+熊猫|xióngmāo|le panda|1
+马|mǎ|le cheval|1
+牛|niú|la vache|2
+猪|zhū|le cochon|2
+羊|yáng|le mouton|2
+鸡|jī|la poule|2
+鸭子|yāzi|le canard|2
+兔子|tùzi|le lapin|2
+老鼠|lǎoshǔ|la souris|2
+老虎|lǎohǔ|le tigre|2
+狮子|shīzi|le lion|2
+大象|dàxiàng|l'éléphant (m.)|2
+猴子|hóuzi|le singe|2
+蛇|shé|le serpent|3
+熊|xióng|l'ours (m.)|3
+狼|láng|le loup|3
+狐狸|húli|le renard|3
+蝴蝶|húdié|le papillon|3
+蜜蜂|mìfēng|l'abeille (f.)|3
+蚂蚁|mǎyǐ|la fourmi|3
+蜘蛛|zhīzhū|l'araignée (f.)|3
+长颈鹿|chángjǐnglù|la girafe|3
+海豚|hǎitún|le dauphin|3
+乌龟|wūguī|la tortue|3
+青蛙|qīngwā|la grenouille|3
+企鹅|qǐ'é|le pingouin|3
+
+[fruits-legumes]
+苹果|píngguǒ|la pomme|1
+香蕉|xiāngjiāo|la banane|1
+西瓜|xīguā|la pastèque|2
+葡萄|pútao|le raisin|2
+橙子|chéngzi|l'orange (f.)|2
+草莓|cǎoméi|la fraise|2
+土豆|tǔdòu|la pomme de terre|2
+西红柿|xīhóngshì|la tomate|2
+桃子|táozi|la pêche|3
+梨|lí|la poire|3
+柠檬|níngméng|le citron|3
+樱桃|yīngtáo|la cerise|3
+菠萝|bōluó|l'ananas (m.)|3
+芒果|mángguǒ|la mangue|3
+胡萝卜|húluóbo|la carotte|3
+黄瓜|huángguā|le concombre|3
+洋葱|yángcōng|l'oignon (m.)|3
+蘑菇|mógu|le champignon|3
+大蒜|dàsuàn|l'ail (m.)|3
+玉米|yùmǐ|le maïs|3
+茄子|qiézi|l'aubergine (f.)|3
+
+[nourriture]
+米饭|mǐfàn|le riz|1
+面包|miànbāo|le pain|1
+鸡蛋|jīdàn|l'œuf (m.)|1
+水|shuǐ|l'eau (f.)|1
+茶|chá|le thé|1
+咖啡|kāfēi|le café|1
+牛奶|niúnǎi|le lait|1
+面条|miàntiáo|les nouilles (f.)|2
+肉|ròu|la viande|2|viande
+鸡肉|jīròu|le poulet|2|viande
+牛肉|niúròu|le bœuf|2|viande
+猪肉|zhūròu|le porc|2|viande
+蛋糕|dàngāo|le gâteau|2
+汤|tāng|la soupe|2
+糖|táng|le sucre|2
+巧克力|qiǎokèlì|le chocolat|2
+果汁|guǒzhī|le jus de fruits|2
+啤酒|píjiǔ|la bière|2
+盐|yán|le sel|3
+奶酪|nǎilào|le fromage|3
+冰淇淋|bīngqílín|la glace|3
+黄油|huángyóu|le beurre|3
+饼干|bǐnggān|le biscuit|3
+沙拉|shālā|la salade|3
+蜂蜜|fēngmì|le miel|3
+葡萄酒|pútaojiǔ|le vin|3
+
+[corps]
+头|tóu|la tête|1
+手|shǒu|la main|1
+眼睛|yǎnjing|l'œil (m.)|1
+嘴|zuǐ|la bouche|2
+耳朵|ěrduo|l'oreille (f.)|2
+鼻子|bízi|le nez|2
+脚|jiǎo|le pied|2
+头发|tóufa|les cheveux (m.)|2
+脸|liǎn|le visage|2
+牙齿|yáchǐ|la dent|3
+腿|tuǐ|la jambe|3
+心|xīn|le cœur|3
+肚子|dùzi|le ventre|3
+肩膀|jiānbǎng|l'épaule (f.)|3
+手指|shǒuzhǐ|le doigt|3
+脖子|bózi|le cou|3
+胳膊|gēbo|le bras|3
+
+[famille]
+妈妈|māma|la maman|1
+爸爸|bàba|le papa|1
+哥哥|gēge|le grand frère|1
+姐姐|jiějie|la grande sœur|1
+弟弟|dìdi|le petit frère|1
+妹妹|mèimei|la petite sœur|1
+朋友|péngyou|l'ami (m.)|1
+孩子|háizi|l'enfant (m.)|1|enfant
+男人|nánrén|l'homme (m.)|1|homme
+女人|nǚrén|la femme|1|femme
+爷爷|yéye|le grand-père|2
+奶奶|nǎinai|la grand-mère|2
+儿子|érzi|le fils|2|enfant
+女儿|nǚ'ér|la fille|2|enfant
+男孩|nánhái|le garçon|2|enfant
+丈夫|zhàngfu|le mari|2|homme
+妻子|qīzi|l'épouse (f.)|2|femme
+婴儿|yīng'ér|le bébé|3|enfant
+邻居|línjū|le voisin|3
+客人|kèrén|l'invité (m.)|3
+叔叔|shūshu|l'oncle (m.)|3
+阿姨|āyí|la tante|3
+
+[metiers]
+老师|lǎoshī|le professeur|1
+医生|yīshēng|le médecin|1
+学生|xuésheng|l'étudiant (m.)|1
+警察|jǐngchá|le policier|2
+司机|sījī|le chauffeur|2
+服务员|fúwùyuán|le serveur|2
+护士|hùshi|l'infirmière (f.)|3
+厨师|chúshī|le cuisinier|3
+律师|lǜshī|l'avocat (m.)|3
+工程师|gōngchéngshī|l'ingénieur (m.)|3
+记者|jìzhě|le journaliste|3
+演员|yǎnyuán|l'acteur (m.)|3
+歌手|gēshǒu|le chanteur|3
+农民|nóngmín|l'agriculteur (m.)|3
+老板|lǎobǎn|le patron|3
+画家|huàjiā|le peintre|3
+作家|zuòjiā|l'écrivain (m.)|3
+科学家|kēxuéjiā|le scientifique|3
+
+[lieux]
+家|jiā|la maison|1
+学校|xuéxiào|l'école (f.)|1|ecole
+医院|yīyuàn|l'hôpital (m.)|1
+商店|shāngdiàn|le magasin|1|magasin
+餐厅|cāntīng|le restaurant|2
+机场|jīchǎng|l'aéroport (m.)|2
+火车站|huǒchēzhàn|la gare|2
+银行|yínháng|la banque|2
+图书馆|túshūguǎn|la bibliothèque|2
+公园|gōngyuán|le parc|2
+超市|chāoshì|le supermarché|2|magasin
+电影院|diànyǐngyuàn|le cinéma|2
+酒店|jiǔdiàn|l'hôtel (m.)|2
+大学|dàxué|l'université (f.)|2|ecole
+公司|gōngsī|l'entreprise (f.)|2|bureau
+城市|chéngshì|la ville|2
+厨房|chúfáng|la cuisine|2
+教室|jiàoshì|la salle de classe|2|ecole
+办公室|bàngōngshì|le bureau|3|bureau
+博物馆|bówùguǎn|le musée|3
+农村|nóngcūn|la campagne|3
+卧室|wòshì|la chambre|3
+客厅|kètīng|le salon|3
+邮局|yóujú|la poste|3
+药店|yàodiàn|la pharmacie|3
+动物园|dòngwùyuán|le zoo|3
+面包店|miànbāodiàn|la boulangerie|3|magasin
+
+[nature]
+花|huā|la fleur|1
+山|shān|la montagne|1
+河|hé|la rivière|2
+海|hǎi|la mer|2
+太阳|tàiyáng|le soleil|2
+月亮|yuèliang|la lune|2
+星星|xīngxing|l'étoile (f.)|2
+雨|yǔ|la pluie|2
+雪|xuě|la neige|2
+风|fēng|le vent|2
+树|shù|l'arbre (m.)|2
+天气|tiānqì|la météo|2
+云|yún|le nuage|3
+天空|tiānkōng|le ciel|3
+草|cǎo|l'herbe (f.)|3
+湖|hú|le lac|3
+森林|sēnlín|la forêt|3
+岛|dǎo|l'île (f.)|3
+沙滩|shātān|la plage|3
+石头|shítou|la pierre|3
+火|huǒ|le feu|3
+彩虹|cǎihóng|l'arc-en-ciel (m.)|3
+
+[temps]
+今天|jīntiān|aujourd'hui|1
+明天|míngtiān|demain|1
+昨天|zuótiān|hier|1
+现在|xiànzài|maintenant|1
+早上|zǎoshang|le matin|1
+下午|xiàwǔ|l'après-midi (m.)|1
+晚上|wǎnshang|le soir|1
+星期|xīngqī|la semaine|1
+月|yuè|le mois|1
+年|nián|l'année (f.)|1
+中午|zhōngwǔ|le midi|2
+小时|xiǎoshí|l'heure (f.)|2
+分钟|fēnzhōng|la minute|2
+春天|chūntiān|le printemps|2
+夏天|xiàtiān|l'été (m.)|2
+秋天|qiūtiān|l'automne (m.)|2
+冬天|dōngtiān|l'hiver (m.)|2
+周末|zhōumò|le week-end|2
+生日|shēngrì|l'anniversaire (m.)|2
+
+[couleurs]
+红色|hóngsè|rouge|1
+白色|báisè|blanc|1
+黑色|hēisè|noir|1
+蓝色|lánsè|bleu|2
+绿色|lǜsè|vert|2
+黄色|huángsè|jaune|2
+粉色|fěnsè|rose|3
+紫色|zǐsè|violet|3
+灰色|huīsè|gris|3
+橙色|chéngsè|orange|3
+棕色|zōngsè|marron|3
+
+[vetements]
+裤子|kùzi|le pantalon|2
+裙子|qúnzi|la jupe|2
+鞋|xié|la chaussure|2
+帽子|màozi|le chapeau|2
+手表|shǒubiǎo|la montre|2
+包|bāo|le sac|2
+衬衫|chènshān|la chemise|3
+外套|wàitào|le manteau|3
+袜子|wàzi|la chaussette|3
+眼镜|yǎnjìng|les lunettes (f.)|3
+雨伞|yǔsǎn|le parapluie|3
+围巾|wéijīn|l'écharpe (f.)|3
+手套|shǒutào|le gant|3
+连衣裙|liányīqún|la robe|3
+毛衣|máoyī|le pull|3
+
+[objets]
+书|shū|le livre|1
+桌子|zhuōzi|la table|1
+椅子|yǐzi|la chaise|1
+手机|shǒujī|le téléphone portable|1
+电脑|diànnǎo|l'ordinateur (m.)|1
+电视|diànshì|la télévision|1
+钱|qián|l'argent (m.)|1
+床|chuáng|le lit|2
+门|mén|la porte|2
+窗户|chuānghu|la fenêtre|2
+笔|bǐ|le stylo|2|stylo
+杯子|bēizi|la tasse|2
+筷子|kuàizi|les baguettes (f.)|2
+照片|zhàopiàn|la photo|2
+报纸|bàozhǐ|le journal|2
+本子|běnzi|le cahier|2
+铅笔|qiānbǐ|le crayon|3|stylo
+钥匙|yàoshi|la clé|3
+灯|dēng|la lampe|3
+冰箱|bīngxiāng|le réfrigérateur|3
+镜子|jìngzi|le miroir|3
+刀|dāo|le couteau|3
+勺子|sháozi|la cuillère|3
+盘子|pánzi|l'assiette (f.)|3
+碗|wǎn|le bol|3
+钟|zhōng|l'horloge (f.)|3
+地图|dìtú|la carte|3
+礼物|lǐwù|le cadeau|3
+信|xìn|la lettre|3
+沙发|shāfā|le canapé|3
+护照|hùzhào|le passeport|3
+
+[transports]
+汽车|qìchē|la voiture|1
+出租车|chūzūchē|le taxi|1
+飞机|fēijī|l'avion (m.)|1
+火车|huǒchē|le train|2
+公交车|gōngjiāochē|le bus|2
+自行车|zìxíngchē|le vélo|2
+船|chuán|le bateau|2
+地铁|dìtiě|le métro|2
+摩托车|mótuōchē|la moto|3
+
+[pays]
+中国|Zhōngguó|la Chine|1
+法国|Fǎguó|la France|1
+美国|Měiguó|les États-Unis (m.)|2
+英国|Yīngguó|le Royaume-Uni|2
+日本|Rìběn|le Japon|2
+德国|Déguó|l'Allemagne (f.)|2
+意大利|Yìdàlì|l'Italie (f.)|3
+西班牙|Xībānyá|l'Espagne (f.)|3
+加拿大|Jiānádà|le Canada|3
+俄罗斯|Éluósī|la Russie|3
+韩国|Hánguó|la Corée du Sud|3
+巴西|Bāxī|le Brésil|3
+印度|Yìndù|l'Inde (f.)|3
+澳大利亚|Àodàlìyà|l'Australie (f.)|3
+
+[ecole]
+名字|míngzi|le nom|1
+字|zì|le caractère|1
+工作|gōngzuò|le travail|1
+课|kè|le cours|2
+考试|kǎoshì|l'examen (m.)|2
+作业|zuòyè|les devoirs (m.)|2
+问题|wèntí|la question|2
+词典|cídiǎn|le dictionnaire|3
+黑板|hēibǎn|le tableau|3
+会议|huìyì|la réunion|3
+假期|jiàqī|les vacances (f.)|3
+语言|yǔyán|la langue|3
+
+[loisirs]
+电影|diànyǐng|le film|1
+音乐|yīnyuè|la musique|2|musique
+歌|gē|la chanson|2|musique
+运动|yùndòng|le sport|2|sport
+足球|zúqiú|le football|2|sport
+篮球|lánqiú|le basket|2|sport
+旅游|lǚyóu|le voyage|2
+游戏|yóuxì|le jeu|3
+
+[verbes]
+吃|chī|manger|1
+喝|hē|boire|1
+看|kàn|regarder|1|lire
+听|tīng|écouter|1
+说|shuō|dire|1
+读|dú|lire|1|lire
+写|xiě|écrire|1
+买|mǎi|acheter|1
+来|lái|venir|1
+去|qù|aller|1|aller
+睡觉|shuìjiào|dormir|1
+学习|xuéxí|étudier|1
+喜欢|xǐhuan|aimer bien|1
+认识|rènshi|connaître|1|savoir
+坐|zuò|s'asseoir|1
+住|zhù|habiter|1
+打电话|dǎ diànhuà|téléphoner|1
+卖|mài|vendre|2
+走|zǒu|marcher|2|aller
+跑|pǎo|courir|2
+起床|qǐchuáng|se lever|2
+做饭|zuòfàn|cuisiner|2
+唱歌|chànggē|chanter|2
+跳舞|tiàowǔ|danser|2
+游泳|yóuyǒng|nager|2
+开|kāi|ouvrir|2
+等|děng|attendre|2
+找|zhǎo|chercher|2
+帮助|bāngzhù|aider|2
+知道|zhīdào|savoir|2|savoir
+笑|xiào|rire|2
+洗|xǐ|laver|2
+问|wèn|demander|2
+给|gěi|donner|2|donner
+开车|kāichē|conduire|2
+休息|xiūxi|se reposer|2
+玩|wán|jouer|2
+关|guān|fermer|3
+哭|kū|pleurer|3
+旅行|lǚxíng|voyager|3
+飞|fēi|voler|3
+送|sòng|offrir|3|donner
+借|jiè|emprunter|3
+忘记|wàngjì|oublier|3
+画画|huàhuà|dessiner|3
+教|jiāo|enseigner|3
+回答|huídá|répondre|3
+
+[adjectifs]
+大|dà|grand|1|grand
+小|xiǎo|petit|1
+好|hǎo|bon|1|bon
+热|rè|chaud|1
+冷|lěng|froid|1
+新|xīn|nouveau|1|nouveau
+高兴|gāoxìng|content|1
+漂亮|piàoliang|joli|1|joli
+老|lǎo|vieux|2
+年轻|niánqīng|jeune|2
+快|kuài|rapide|2
+慢|màn|lent|2
+贵|guì|cher|2
+便宜|piányi|bon marché|2
+忙|máng|occupé|2
+累|lèi|fatigué|2
+长|cháng|long|2
+容易|róngyì|facile|2
+难|nán|difficile|2
+可爱|kě'ài|mignon|2|joli
+好吃|hǎochī|délicieux|2|bon
+短|duǎn|court|3
+难过|nánguò|triste|3
+生气|shēngqì|fâché|3
+干净|gānjìng|propre|3
+脏|zāng|sale|3
+聪明|cōngming|intelligent|3
+安静|ānjìng|calme|3
+有名|yǒumíng|célèbre|3
+重要|zhòngyào|important|3
+甜|tián|sucré|3
+辣|là|épicé|3
+酸|suān|acide|3
+胖|pàng|gros|3|grand
+瘦|shòu|mince|3
+新鲜|xīnxiān|frais|3|nouveau
+舒服|shūfu|confortable|3
+危险|wēixiǎn|dangereux|3
